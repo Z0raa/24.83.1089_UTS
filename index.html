@@ -12,30 +12,18 @@
         /* === TEMA VALORANT === */
         :root {
             --valo-red: #ff4655;
-            --valo-dark-grey: #1a1f2c;
-            --valo-black: #111111;
+            --valo-dark-grey: #1a1f2c; /* Warna Sidebar */
+            --valo-black: #111111;    /* Warna Utama / Card */
             --valo-light: #ece8e1;
+            --dashboard-bg: #151923;  /* Warna Background Main Content */
         }
 
         body {
             font-family: 'Montserrat', sans-serif;
-            background-color: var(--valo-dark-grey);
+            background-color: var(--dashboard-bg);
             color: var(--valo-light);
-            overflow-x: hidden;
-            position: relative;
-            min-height: 100vh;
-        }
-
-        /* Watermark Background Transparan */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url('https://i.imgur.com/placeholder-grid.png'); 
-            background-size: cover;
-            opacity: 0.1;
-            z-index: -1;
-            pointer-events: none;
+            margin: 0;
+            overflow: hidden; /* Mencegah scroll di body, scroll pindah ke main content */
         }
 
         h1, h2, h3, h4, h5, .nav-link, .btn-valo {
@@ -43,82 +31,241 @@
             text-transform: uppercase;
         }
 
-        /* === NAVBAR RESPONSIF === */
-        .navbar {
-            background-color: var(--valo-black);
-            border-bottom: 2px solid var(--valo-red);
-            padding: 15px 0;
-        }
-        .navbar-brand { font-weight: 700; font-size: 1.5rem; letter-spacing: 1px; color: #fff;}
-        .navbar-brand span { color: var(--valo-red); }
-        .nav-link { color: #fff !important; font-size: 0.9rem; letter-spacing: 1px; margin: 0 5px; cursor: pointer; transition: 0.3s; }
-        .nav-link:hover, .nav-link.active { color: var(--valo-red) !important; }
-
-        /* === SINGLE PAGE APPLICATION (SPA) === */
-        .page-section {
-            display: none;
-            animation: fadeIn 0.5s ease-in-out;
-        }
-        .page-section.active-page {
-            display: block;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* === LAYOUT DASHBOARD UTAMA === */
+        .dashboard-wrapper {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
         }
 
-        /* === KOMPONEN UI === */
-        .valo-card {
-            background-color: var(--valo-black);
-            padding: 30px;
-            border: 1px solid #333;
+        /* === SIDEBAR (MENU KIRI) === */
+        .sidebar {
+            width: 260px;
+            background-color: var(--valo-dark-grey);
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #2a3143;
+            transition: 0.3s;
+            z-index: 10;
+        }
+        
+        .sidebar-header {
+            padding: 25px 20px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            font-family: 'Oswald', sans-serif;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+        .sidebar-header span { color: var(--valo-red); }
+        .sidebar-header i { color: var(--valo-red); margin-right: 10px; }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex-grow: 1;
+        }
+        
+        .sidebar-menu li {
             position: relative;
         }
-        .valo-card::before {
-            content: ''; position: absolute; top: -1px; left: -1px;
-            width: 15px; height: 15px; border-top: 3px solid var(--valo-red); border-left: 3px solid var(--valo-red);
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 15px 25px;
+            color: #9ba1b0;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: 0.3s;
+            cursor: pointer;
         }
 
-        .form-control {
-            background-color: rgba(255,255,255,0.05);
+        .sidebar-menu a i {
+            width: 25px;
+            font-size: 1.1rem;
+            margin-right: 10px;
+        }
+
+        .sidebar-menu a:hover {
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Efek Garis Merah di Menu Aktif (Sesuai Referensi) */
+        .sidebar-menu a.active {
+            color: #fff;
+            background-color: rgba(255, 70, 85, 0.1);
+        }
+        .sidebar-menu a.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background-color: var(--valo-red);
+        }
+
+        .sidebar-footer {
+            padding: 20px;
+            border-top: 1px solid #2a3143;
+        }
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .social-icons i {
+            color: #9ba1b0;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .social-icons i:hover { color: #fff; }
+        .copyright {
+            font-size: 0.7rem;
+            color: #6c7280;
+        }
+
+        /* === MAIN CONTENT (AREA KANAN) === */
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        /* Watermark Background di Area Konten */
+        .main-content::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('https://i.imgur.com/placeholder-grid.png'); 
+            background-size: cover;
+            opacity: 0.05;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Top Header (Pencarian & Profil) */
+        .top-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+        }
+
+        .search-bar input {
+            background-color: rgba(255, 255, 255, 0.05);
             border: 1px solid #333;
             color: #fff;
-            border-radius: 0;
-            padding: 12px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            width: 300px;
+            font-size: 0.9rem;
         }
-        .form-control:focus {
-            background-color: rgba(255,255,255,0.1);
-            color: #fff;
+        .search-bar input:focus {
+            outline: none;
             border-color: var(--valo-red);
-            box-shadow: none;
         }
 
-        .btn-valo {
-            background-color: var(--valo-red);
-            color: white;
-            border: none;
-            border-radius: 0;
-            padding: 12px 25px;
-            letter-spacing: 1px;
-            transition: 0.3s;
-            width: 100%;
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
+        .user-profile span {
+            font-size: 0.9rem;
+            color: #fff;
+        }
+        .user-profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid var(--valo-red);
+        }
+
+        .content-area {
+            padding: 0 40px 40px 40px;
+        }
+
+        /* Hero Banner (Sesuai Referensi Gambar) */
+        .hero-banner {
+            background: linear-gradient(135deg, var(--valo-dark-grey) 0%, #2a3143 100%);
+            border-radius: 15px;
+            padding: 60px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #333;
+        }
+        .hero-banner::after {
+            content: '';
+            position: absolute;
+            right: 0; bottom: 0;
+            width: 150px; height: 150px;
+            background: repeating-linear-gradient(45deg, transparent, transparent 10px, var(--valo-red) 10px, var(--valo-red) 20px);
+            opacity: 0.2;
+            border-top-left-radius: 100%;
+        }
+        .banner-logo {
+            font-size: 4rem;
+            font-weight: 700;
+            font-family: 'Oswald', sans-serif;
+            color: #fff;
+            letter-spacing: 2px;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .banner-logo i { color: var(--valo-red); font-size: 4.5rem;}
+        .banner-logo span { color: var(--valo-red); }
+
+        /* === KOMPONEN UI LAMA === */
+        .page-section { display: none; animation: fadeIn 0.5s ease-in-out; }
+        .page-section.active-page { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        .valo-card {
+            background-color: var(--valo-black); padding: 30px; border: 1px solid #333; position: relative; border-radius: 10px;
+        }
+
+        .form-control { background-color: rgba(255,255,255,0.05); border: 1px solid #333; color: #fff; padding: 12px; }
+        .form-control:focus { background-color: rgba(255,255,255,0.1); color: #fff; border-color: var(--valo-red); box-shadow: none; }
+        .btn-valo { background-color: var(--valo-red); color: white; border: none; padding: 12px 25px; letter-spacing: 1px; transition: 0.3s; width: 100%; border-radius: 5px; }
         .btn-valo:hover { background-color: #ff2a3b; color: white; }
 
         /* === HOME: GRID AGEN === */
         .agent-card {
-            background-color: var(--valo-black);
+            background-color: transparent; /* Masih transparan */
             position: relative;
             overflow: hidden;
-            border: 1px solid #333;
+            border: none;                  /* Masih tanpa border */
             height: 450px; 
-            width: 100%;  
+            width: 100%;   
             transition: 0.3s;
-            border-radius: 5px; 
+            border-radius: 10px; 
         }
+        
+        /*👇 INI YANG PENTING DITAMBAHKAN/DIGANTI 👇*/
+        /* Memastikan gambarnya pas di dalem kotak dan di tengah-tengah */
         .agent-card img {
-            width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.3s;
+            width: 100%;          /* Gambarnya full selebar kotak */
+            height: 100%;         /* Gambarnya full setinggi kotak */
+            object-fit: cover;    /* Biar gambarnya di-crop di tengah biar pas */
+            border-radius: 10px;  /* Biar ujung gambarnya tumpul */
+            opacity: 0.7;         /* Biar ada efek agak gelap (bawaan lama) */
+            transition: 0.3s;
         }
+        /*👆========================================👆*/
+
         .agent-card:hover img { opacity: 1; transform: scale(1.05); }
         .agent-info {
             position: absolute; bottom: 15px; left: 15px; z-index: 2;
@@ -126,392 +273,365 @@
         .agent-info h3 { color: #fff; margin: 0; font-size: 1.5rem; }
         .agent-info span { color: var(--valo-red); font-size: 0.8rem; }
 
-        .ability-box { background-color: var(--valo-black); padding: 20px; height: 100%; border: 1px solid #333; }
+        .ability-box { background-color: var(--valo-black); padding: 20px; height: 100%; border: 1px solid #333; border-radius: 10px; }
         .ability-box h4 { color: #fff; margin-bottom: 10px; }
         .ability-type { color: var(--valo-red); font-size: 0.8rem; font-weight: 600; }
         .ability-desc { font-size: 0.85rem; color: #aaa; }
 
-        /* === TAMBAHAN UNTUK IKON & JUDUL ABILITY === */
-        .agent-icon-row {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 15px;
-        }
-        .agent-icon-box {
-            width: 45px;
-            height: 45px;
-            background: transparent; 
-            border: none;            
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: 0.3s;
-            cursor: pointer;
-        }
-        .agent-icon-box:hover {
-            transform: translateY(-3px) scale(1.1); 
-            filter: drop-shadow(0 0 8px var(--valo-red)); 
-        }
-        .ability-separator {
-            text-align: center;
-            margin: 40px 0 30px 0;
-            border-top: 2px solid var(--valo-red);
-            border-bottom: 2px solid var(--valo-red);
-            background-color: var(--valo-black);
-            padding: 10px 0;
-        }
-        .ability-separator h2 {
-            font-size: 3rem;
-            margin: 0;
-            letter-spacing: 5px;
-            color: #fff;
-        }
+        .agent-icon-row { display: flex; justify-content: center; gap: 10px; margin-top: 15px; }
+        .agent-icon-box { width: 45px; height: 45px; background: transparent; border: none; display: flex; align-items: center; justify-content: center; transition: 0.3s; cursor: pointer; }
+        .agent-icon-box:hover { transform: translateY(-3px) scale(1.1); filter: drop-shadow(0 0 8px var(--valo-red)); }
+        
+        .ability-separator { text-align: left; margin: 40px 0 20px 0; border-bottom: 2px solid #333; padding-bottom: 10px; }
+        .ability-separator h2 { font-size: 1.5rem; margin: 0; letter-spacing: 2px; color: #fff; display: flex; align-items: center;}
+        .ability-separator h2::before { content: ''; display: inline-block; width: 5px; height: 25px; background-color: var(--valo-red); margin-right: 15px; }
 
         /* === TOP UP: VP BOX === */
-        .vp-box {
-            background-color: var(--valo-dark-grey);
-            border: 1px solid #333;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: 0.3s;
-            height: 100%;
-        }
-        .vp-box:hover {
-            border-color: var(--valo-red);
-            background-color: var(--valo-black);
-            transform: translateY(-5px);
-        }
-        .vp-box.selected {
-            border-color: var(--valo-red);
-            background-color: var(--valo-black);
-            transform: translateY(-5px);
-            box-shadow: 0 0 15px rgba(255, 70, 85, 0.3);
-        }
+        .vp-box { background-color: var(--valo-dark-grey); border: 1px solid #333; padding: 20px; text-align: center; cursor: pointer; transition: 0.3s; height: 100%; border-radius: 10px; }
+        .vp-box:hover { border-color: var(--valo-red); background-color: var(--valo-black); transform: translateY(-5px); }
+        .vp-box.selected { border-color: var(--valo-red); background-color: var(--valo-black); transform: translateY(-5px); box-shadow: 0 0 15px rgba(255, 70, 85, 0.3); }
         .vp-box h5 { color: #fff; margin-bottom: 5px; font-size: 1.5rem; }
         .vp-box span { color: var(--valo-red); font-weight: bold; font-family: 'Montserrat', sans-serif;}
 
         /* === LIGHT MODE THEME === */
         body.light-mode {
-            --valo-dark-grey: #f4f6f8; 
-            --valo-black: #ffffff;     
-            --valo-light: #111111;     
+            --valo-dark-grey: #ffffff; 
+            --valo-black: #f8f9fa;     
+            --valo-light: #111111;
+            --dashboard-bg: #f4f6f8;
         }
         
-        body.light-mode .navbar-brand, 
-        body.light-mode .nav-link, 
-        body.light-mode h2, 
-        body.light-mode h4, 
-        body.light-mode .text-white {
-            color: #111111 !important;
-        }
+        body.light-mode .sidebar { border-right-color: #dee2e6; }
+        body.light-mode .sidebar-header, body.light-mode .sidebar-menu a:hover, body.light-mode .sidebar-menu a.active { color: #111; }
+        body.light-mode .sidebar-menu a { color: #6c757d; }
+        body.light-mode .sidebar-footer { border-top-color: #dee2e6; }
         
-        body.light-mode .text-secondary {
-            color: #6c757d !important;
-        }
-
-        body.light-mode .vp-box h5 {
-            color: #111111 !important;
-        }
+        body.light-mode .hero-banner { background: linear-gradient(135deg, #ffffff 0%, #e9ecef 100%); border-color: #dee2e6; box-shadow: 0 4px 15px rgba(0,0,0,0.05);}
+        body.light-mode .banner-logo { color: #111; }
         
-        body.light-mode .valo-card, 
-        body.light-mode .ability-box, 
-        body.light-mode .vp-box,
-        body.light-mode .agent-card {
-            border-color: #dee2e6;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-        }
+        body.light-mode .search-bar input { background-color: #fff; border-color: #ced4da; color: #111; }
+        body.light-mode .user-profile span { color: #111; }
         
-        body.light-mode .form-control {
-            background-color: #ffffff;
-            border-color: #ced4da;
-            color: #111111;
-        }
+        body.light-mode h2, body.light-mode h4, body.light-mode .text-white { color: #111111 !important; }
+        body.light-mode .text-secondary { color: #6c757d !important; }
+        body.light-mode .vp-box h5 { color: #111111 !important; }
         
-        body.light-mode .form-control:focus {
-            border-color: var(--valo-red);
-        }
-        
+        body.light-mode .valo-card, body.light-mode .ability-box, body.light-mode .vp-box, body.light-mode .agent-card { border-color: #dee2e6; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        body.light-mode .form-control { background-color: #ffffff; border-color: #ced4da; color: #111111; }
         body.light-mode .agent-info h3 { color: #ffffff !important; }
-        body.light-mode .navbar-toggler-icon { filter: invert(1); } 
-
-        /* Light Mode Penyesuaian Ikon Agen */
+        /* Light Mode Penyesuaian Ikon Agen (Trik hapus background kotor) */
         body.light-mode .agent-icon-box img {
-            filter: invert(1);
+            filter: grayscale(1) invert(1) contrast(500%); /* Paksa jadi hitam & putih murni */
+            mix-blend-mode: multiply; /* Trik agar background putihnya tembus pandang */
         }
-        body.light-mode .agent-icon-box {
-            background: transparent;
-            border: none;
-            box-shadow: none !important;
-        }
-        body.light-mode .ability-separator {
-            background-color: #f4f6f8;
-        }
-        body.light-mode .ability-separator h2 {
-            color: #111111 !important;
-        }
+        body.light-mode .ability-separator { border-bottom-color: #dee2e6; background-color: transparent;}
+        
     </style>
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
-        <div class="container">
-            <a class="navbar-brand" href="#" onclick="showPage('home', event)">
-                <i class="fa-solid fa-gamepad"></i> ZORA<span>VALO</span>
-            </a>
-            <button class="navbar-toggler rounded-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto align-items-lg-center">
-                    <li class="nav-item"><a class="nav-link nav-btn active" onclick="showPage('home', event)">Home</a></li>
-                    <li class="nav-item"><a class="nav-link nav-btn" onclick="showPage('topup', event)">Top Up</a></li>
-                    <li class="nav-item"><a class="nav-link nav-btn" onclick="showPage('about', event)">About Us</a></li>
-                    <li class="nav-item"><a class="nav-link nav-btn" onclick="showPage('contact', event)">Contact</a></li>
-                    <li class="nav-item"><a class="nav-link nav-btn" onclick="showPage('signin', event)">Sign In</a></li>
-                    <li class="nav-item ms-lg-2 mt-2 mt-lg-0 mb-2 mb-lg-0"><button class="btn btn-valo" onclick="showPage('signup', event)">Sign Up</button></li>
+    <div class="dashboard-wrapper">
+        
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <i class="fa-solid fa-gamepad"></i>ZORA<span>VALO</span>
+            </div>
+            
+            <ul class="sidebar-menu">
+                <li><a class="nav-btn active" onclick="showPage('home', event)"><i class="fa-solid fa-border-all"></i> Home Agents</a></li>
+                <li><a class="nav-btn" onclick="showPage('topup', event)"><i class="fa-solid fa-coins"></i> Topup Games</a></li>
+                <li><a class="nav-btn" onclick="showPage('about', event)"><i class="fa-solid fa-circle-info"></i> About Us</a></li>
+                <li><a class="nav-btn" onclick="showPage('contact', event)"><i class="fa-solid fa-headset"></i> Contact Us</a></li>
+                <li><a class="nav-btn" onclick="showPage('signin', event)"><i class="fa-solid fa-right-to-bracket"></i> Sign In</a></li>
+                <li><a class="nav-btn" onclick="showPage('signup', event)"><i class="fa-solid fa-user-plus"></i> Sign Up</a></li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <div class="social-icons">
+                    <i class="fa-brands fa-instagram"></i>
+                    <i class="fa-brands fa-telegram"></i>
+                    <i class="fa-brands fa-tiktok"></i>
+                    <i class="fa-brands fa-whatsapp"></i>
+                </div>
+                <div class="copyright">
+                    Copyright © 2026 ZoraValo.<br>24.38.1089.
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            
+            <header class="top-header">
+                <div class="search-bar">
+                    <input type="text" placeholder="Cari games favorit kamu...">
+                </div>
+                <div class="user-profile">
+                    <button id="theme-toggle" class="btn" style="color: var(--valo-light); font-size: 1.2rem; border:none;">
+                        <i class="fa-solid fa-sun"></i>
+                    </button>
+                    <span>Akun Saya</span>
+                    <img src="profil.png" alt="Profile">
+                </div>
+            </header>
+
+            <div class="content-area">
+
+                <div id="home" class="page-section active-page">
                     
-                    <li class="nav-item ms-lg-3">
-                        <button id="theme-toggle" class="btn" style="color: var(--valo-light); font-size: 1.2rem;">
-                            <i class="fa-solid fa-sun"></i>
-                        </button>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <div class="container mt-5 mb-5">
-
-        <div id="home" class="page-section active-page">
-            <div class="d-flex align-items-center mb-4">
-                <h2 class="m-0 me-3" style="font-size: 3rem; color: rgb(239, 215, 215);">AGENTS</h2>
-                <h3 class="m-0" style="color: var(--valo-red);">CHAMPIONS ROSTER</h3>
-            </div>
-
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="agent-card">
-                        <img src="Miks valorant.jpg" alt="Miks">
-                        <div class="agent-info">
-                            <span>Croatia</span>
-                            <h3>MIKS</h3>
+                    <div class="hero-banner">
+                        <div class="banner-logo">
+                            <i class="fa-solid fa-gamepad"></i> ZORA<span>VALO</span>
                         </div>
                     </div>
-                    <div class="agent-icon-row">
-                        <div class="agent-icon-box"><img src="miks1.png" alt="Miks Skill 1" style="width: 28px; height: 28px; object-fit: contain;"></div>
-                        <div class="agent-icon-box"><img src="miks2.png" alt="Miks Skill 2" style="width: 28px; height: 28px; object-fit: contain;"></div>
-                        <div class="agent-icon-box"><img src="miks3.png" alt="Miks Skill 3" style="width: 28px; height: 28px; object-fit: contain;"></div>
-                    </div>
-                </div>
-                
-                <div class="col-md-4">
-                    <div class="agent-card">
-                        <img src="reyna.jpg" alt="Reyna">
-                        <div class="agent-info">
-                            <span>Mexico</span>
-                            <h3>REYNA</h3>
-                        </div>
-                    </div>
-                    <div class="agent-icon-row">
-                        <div class="agent-icon-box"><img src="reyna1.png" alt="Reyna Skill 1" style="width: 28px; height: 28px; object-fit: contain;"></div>
-                        <div class="agent-icon-box"><img src="reyna2.png" alt="Reyna Skill 2" style="width: 28px; height: 28px; object-fit: contain;"></div>
-                        <div class="agent-icon-box"><img src="reyna3.png" alt="Reyna Skill 3" style="width: 28px; height: 28px; object-fit: contain;"></div>
-                        <div class="agent-icon-box"><img src="reyna4.png" alt="Reyna Skill 4" style="width: 28px; height: 28px; object-fit: contain;"></div>
-                    </div>
-                </div>
-                
-                <div class="col-md-4">
-                    <div class="agent-card">
-                        <img src="sage.jpg" alt="Sage">
-                        <div class="agent-info">
-                            <span>China</span>
-                            <h3>SAGE</h3> 
-                        </div>
-                    </div>
-                    <div class="agent-icon-row">
-                        <div class="agent-icon-box"><img src="sage1.png" alt="Sage Skill 1" style="width: 28px; height: 28px; object-fit: contain;"></div>
-                        <div class="agent-icon-box"><img src="sage2.png" alt="Sage Skill 2" style="width: 28px; height: 28px; object-fit: contain;"></div>
-                        <div class="agent-icon-box"><img src="sage3.png" alt="Sage Skill 3" style="width: 28px; height: 28px; object-fit: contain;"></div>
-                        <div class="agent-icon-box"><img src="sage4.png" alt="Sage Skill 4" style="width: 28px; height: 28px; object-fit: contain;"></div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="ability-separator">
-                <h2>ABILITY</h2>
-            </div>
+                    <div class="ability-separator">
+                        <h2>VALORANT AGENTS</h2>
+                    </div>
 
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="ability-box">
-                        <span class="ability-type">BOOST</span>
-                        <h4>HARMONIZE</h4>
-                        <p class="ability-desc">EQUIP Harmonize and target a teammate to activate a Combat Stim for both of you. Once activated, the buff refreshes every time either of you gets a kill, allowing the duo to keep momentum during fights.</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="ability-box" style="border-color: var(--valo-red);">
-                        <span class="ability-type">BLIND</span>
-                        <h4>LEER</h4>
-                        <p class="ability-desc">EQUIP an ethereal, destructible eye. ACTIVATE to cast the eye a short distance forward. The eye will Nearsight all enemies who look at it.</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="ability-box">
-                        <span class="ability-type">HEALER</span>
-                        <h4>HEALING ORB</h4>
-                        <p class="ability-desc">EQUIP a healing orb. ACTIVATE a Heal-Over-Time on teammate.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="topup" class="page-section">
-            <h2 class="mb-4" style="color: var(--valo-red);">TOP UP CENTER</h2>
-            <div class="row">
-                <div class="col-lg-8">
-                    <div class="valo-card mb-4">
-                        <h4 class="mb-3 text-white">1. Masukkan Riot ID</h4>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <input type="text" class="form-control" placeholder="Riot ID (Contoh: JettMain)">
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="agent-card">
+                                <img src="Miks valorant.jpg" alt="Miks">
+                                <div class="agent-info">
+                                    <span>Croatia</span>
+                                    <h3>MIKS</h3>
+                                </div>
                             </div>
-                            <div class="col-md-6 mb-3">
-                                <input type="text" class="form-control" placeholder="Tagline (Contoh: #1234)">
+                            <div class="agent-icon-row">
+                                <div class="agent-icon-box"><img src="miks1.png" alt="Miks Skill 1" style="width: 25px; height: 25px; object-fit: contain;"></div>
+                                <div class="agent-icon-box"><img src="miks2.png" alt="Miks Skill 2" style="width: 25px; height: 25px; object-fit: contain;"></div>
+                                <div class="agent-icon-box"><img src="miks3.png" alt="Miks Skill 3" style="width: 25px; height: 25px; object-fit: contain;"></div>
+                                <div class="agent-icon-box"><img src="miks4.png" alt="Miks Skill 4" style="width: 25px; height: 25px; object-fit: contain;"></div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="valo-card mb-4">
-                        <h4 class="mb-3 text-white">2. Pilih Nominal VP</h4>
-                        <div class="row g-3">
-                            <div class="col-6 col-md-4"><div class="vp-box" onclick="selectVP(this, '475 VP', 'Rp 56.000')"><h5>475 VP</h5><span>Rp 56.000</span></div></div>
-                            <div class="col-6 col-md-4"><div class="vp-box" onclick="selectVP(this, '1000 VP', 'Rp 112.000')"><h5>1000 VP</h5><span>Rp 112.000</span></div></div>
-                            <div class="col-6 col-md-4"><div class="vp-box" onclick="selectVP(this, '2050 VP', 'Rp 224.000')"><h5>2050 VP</h5><span>Rp 224.000</span></div></div>
-                            <div class="col-6 col-md-4"><div class="vp-box" onclick="selectVP(this, '3650 VP', 'Rp 389.000')"><h5>3650 VP</h5><span>Rp 389.000</span></div></div>
-                            <div class="col-6 col-md-4"><div class="vp-box" onclick="selectVP(this, '5350 VP', 'Rp 559.000')"><h5>5350 VP</h5><span>Rp 559.000</span></div></div>
-                            <div class="col-6 col-md-4"><div class="vp-box" onclick="selectVP(this, '11000 VP', 'Rp 1.099.000')"><h5>11000 VP</h5><span>Rp 1.099.000</span></div></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4">
-                    <div class="valo-card sticky-top" style="top: 100px;">
-                        <h4 class="mb-4 text-white">3. Pembayaran</h4>
-                        <div class="d-flex justify-content-between mb-3 border-bottom border-secondary pb-2">
-                            <span class="text-secondary">Item</span>
-                            <span id="summary-item" class="text-white fw-bold">-</span>
-                        </div>
-                        <div class="d-flex justify-content-between mb-4 border-bottom border-secondary pb-2">
-                            <span class="text-secondary">Total Harga</span>
-                            <span id="summary-price" class="fw-bold fs-5" style="color: var(--valo-red);">Rp 0</span>
-                        </div>
-                        <label class="form-label text-secondary mt-2">Nomor WhatsApp</label>
-                        <input type="text" class="form-control mb-4" placeholder="0812xxxxxx">
                         
-                        <button class="btn-valo" onclick="prosesBeli()">BELI SEKARANG</button>
-                    </div>
-                </div>
-            </div> 
-        </div>
-
-        <div id="about" class="page-section">
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <div class="valo-card">
-                        <h2 class="mb-4" style="color: var(--valo-red);">ABOUT US</h2>
-                        <p class="fs-5 text-secondary">ZORASTORE adalah ensiklopedia digital untuk agen-agen Valorant, dan tempat untuk topup vp yang sangat cepat dan aman.</p>
-                        <hr class="border-secondary my-4">
-                        <h4>VISI KAMI</h4>
-                        <p class="text-secondary">Memberikan antarmuka (UI) terbaik yang mensimulasikan pengalaman berada di dalam game Valorant secara nyata bagi pengguna web.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="contact" class="page-section">
-            <div class="row">
-                <div class="col-md-5 mb-4">
-                    <div class="valo-card h-100">
-                        <h2 class="mb-4">CONTACT US</h2>
-                        <p class="text-secondary mb-4">Punya pertanyaan seputar agent atau web ini? Kirim pesan ke markas kami.</p>
-                        <p class="mb-1 text-white fw-bold">Email:</p>
-                        <p class="text-secondary">support@zoravalo.com</p>
-                        <p class="mb-1 text-white fw-bold">Lokasi:</p>
-                        <p class="text-secondary">Yogyakarta, Indonesia</p>
-                    </div>
-                </div>
-                <div class="col-md-7">
-                    <div class="valo-card">
-                        <form class="needs-validation" novalidate>
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label text-secondary">Nama (Callsign)</label>
-                                    <input type="text" class="form-control" required>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label text-secondary">Email</label>
-                                    <input type="email" class="form-control" required>
+                        <div class="col-md-4">
+                            <div class="agent-card">
+                                <img src="reyna.jpg" alt="Reyna">
+                                <div class="agent-info">
+                                    <span>Mexico</span>
+                                    <h3>REYNA</h3>
                                 </div>
                             </div>
-                            <div class="mb-4">
-                                <label class="form-label text-secondary">Pesan</label>
-                                <textarea class="form-control" rows="4" required></textarea>
+                            <div class="agent-icon-row">
+                                <div class="agent-icon-box"><img src="reyna1.png" alt="Reyna Skill 1" style="width: 25px; height: 25px; object-fit: contain;"></div>
+                                <div class="agent-icon-box"><img src="reyna2.png" alt="Reyna Skill 2" style="width: 25px; height: 25px; object-fit: contain;"></div>
+                                <div class="agent-icon-box"><img src="reyna3.png" alt="Reyna Skill 3" style="width: 25px; height: 25px; object-fit: contain;"></div>
+                                <div class="agent-icon-box"><img src="reyna4.png" alt="Reyna Skill 4" style="width: 25px; height: 25px; object-fit: contain;"></div>
                             </div>
-                            <button type="submit" class="btn-valo">KIRIM PESAN</button>
-                        </form>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="agent-card">
+                                <img src="sage.jpg" alt="Sage">
+                                <div class="agent-info">
+                                    <span>China</span>
+                                    <h3>SAGE</h3> 
+                                </div>
+                            </div>
+                            <div class="agent-icon-row">
+                                <div class="agent-icon-box"><img src="sage1.png" alt="Sage Skill 1" style="width: 25px; height: 25px; object-fit: contain;"></div>
+                                <div class="agent-icon-box"><img src="sage2.png" alt="Sage Skill 2" style="width: 25px; height: 25px; object-fit: contain;"></div>
+                                <div class="agent-icon-box"><img src="sage3.png" alt="Sage Skill 3" style="width: 25px; height: 25px; object-fit: contain;"></div>
+                                <div class="agent-icon-box"><img src="sage4.png" alt="Sage Skill 4" style="width: 25px; height: 25px; object-fit: contain;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ability-separator">
+                        <h2>ABILITY INFO</h2>
+                    </div>
+
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="ability-box">
+                                <span class="ability-type">BOOST</span>
+                                <h4>HARMONIZE</h4>
+                                <p class="ability-desc">EQUIP Harmonize and target a teammate to activate a Combat Stim for both of you. Once activated, the buff refreshes every time either of you gets a kill.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="ability-box" style="border-color: var(--valo-red);">
+                                <span class="ability-type">BLIND</span>
+                                <h4>LEER</h4>
+                                <p class="ability-desc">EQUIP an ethereal, destructible eye. ACTIVATE to cast the eye a short distance forward. The eye will Nearsight all enemies who look at it.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="ability-box">
+                                <span class="ability-type">HEALER</span>
+                                <h4>HEALING ORB</h4>
+                                <p class="ability-desc">EQUIP a healing orb. ACTIVATE a Heal-Over-Time on teammate to restore health gradually over a few seconds.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <div id="signin" class="page-section">
-            <div class="d-flex justify-content-center">
-                <div class="valo-card col-md-6 col-lg-5">
-                    <h2 class="text-center mb-4">SIGN IN</h2>
-                    <form class="needs-validation" novalidate>
-                        <div class="mb-3">
-                            <label class="form-label text-secondary">Email address</label>
-                            <input type="email" class="form-control" required>
+                <div id="topup" class="page-section">
+                    <div class="ability-separator">
+                        <h2>TOP UP CENTER</h2>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="valo-card mb-4">
+                                <h4 class="mb-3 text-white">1. Masukkan Riot ID</h4>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <input type="text" class="form-control" placeholder="Riot ID (Contoh: JettMain)">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <input type="text" class="form-control" placeholder="Tagline (Contoh: #1234)">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="valo-card mb-4">
+                                <h4 class="mb-3 text-white">2. Pilih Nominal VP</h4>
+                                <div class="row g-3">
+                                    <div class="col-6 col-md-4"><div class="vp-box" onclick="selectVP(this, '475 VP', 'Rp 56.000')"><h5>475 VP</h5><span>Rp 56.000</span></div></div>
+                                    <div class="col-6 col-md-4"><div class="vp-box" onclick="selectVP(this, '1000 VP', 'Rp 112.000')"><h5>1000 VP</h5><span>Rp 112.000</span></div></div>
+                                    <div class="col-6 col-md-4"><div class="vp-box" onclick="selectVP(this, '2050 VP', 'Rp 224.000')"><h5>2050 VP</h5><span>Rp 224.000</span></div></div>
+                                    <div class="col-6 col-md-4"><div class="vp-box" onclick="selectVP(this, '3650 VP', 'Rp 389.000')"><h5>3650 VP</h5><span>Rp 389.000</span></div></div>
+                                    <div class="col-6 col-md-4"><div class="vp-box" onclick="selectVP(this, '5350 VP', 'Rp 559.000')"><h5>5350 VP</h5><span>Rp 559.000</span></div></div>
+                                    <div class="col-6 col-md-4"><div class="vp-box" onclick="selectVP(this, '11000 VP', 'Rp 1.099.000')"><h5>11000 VP</h5><span>Rp 1.099.000</span></div></div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="mb-4">
-                            <label class="form-label text-secondary">Password</label>
-                            <input type="password" class="form-control" required>
+
+                        <div class="col-lg-4">
+                            <div class="valo-card sticky-top" style="top: 20px;">
+                                <h4 class="mb-4 text-white">3. Pembayaran</h4>
+                                <div class="d-flex justify-content-between mb-3 border-bottom border-secondary pb-2">
+                                    <span class="text-secondary">Item</span>
+                                    <span id="summary-item" class="text-white fw-bold">-</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-4 border-bottom border-secondary pb-2">
+                                    <span class="text-secondary">Total Harga</span>
+                                    <span id="summary-price" class="fw-bold fs-5" style="color: var(--valo-red);">Rp 0</span>
+                                </div>
+                                <label class="form-label text-secondary mt-2">Nomor WhatsApp</label>
+                                <input type="text" class="form-control mb-4" placeholder="0812xxxxxx">
+                                
+                                <button class="btn-valo" onclick="prosesBeli()">BELI SEKARANG</button>
+                            </div>
                         </div>
-                        <button type="submit" class="btn-valo mb-3">LOGIN</button>
-                        <div class="text-center">
-                            <small class="text-secondary">Belum punya akun? <a href="#" class="text-danger text-decoration-none fw-bold" onclick="showPage('signup', event)">Daftar di sini</a></small>
-                        </div>
-                    </form>
+                    </div> 
                 </div>
-            </div>
-        </div>
 
-        <div id="signup" class="page-section">
-            <div class="d-flex justify-content-center">
-                <div class="valo-card col-md-6 col-lg-5">
-                    <h2 class="text-center mb-4">SIGN UP</h2>
-                    <form class="needs-validation" novalidate>
-                        <div class="mb-3">
-                            <label class="form-label text-secondary">Riot ID / Username</label>
-                            <input type="text" class="form-control" required>
+               <div id="about" class="page-section">
+                    <div class="ability-separator">
+                        <h2>ABOUT US</h2>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="valo-card">
+                                <div class="row align-items-center">
+                                    <div class="col-md-6 mb-4 mb-md-0">
+                                        <p class="fs-5 text-secondary">ZoraValo adalah platform digital untuk agen-agen Valorant dan top up VP yang cepat dan aman, untuk memenuhi kebutuhan pengguna.</p>
+                                        <hr class="border-secondary my-4">
+                                        <h4 class="text-white">VISI KAMI</h4>
+                                        <p class="text-secondary">Memberikan antarmuka (UI) terbaik yang mensimulasikan pengalaman di dalam game Valorant secara nyata bagi pengguna.</p>
+                                    </div>
+                                    <div class="col-md-6 text-center">
+                                        <img src="Valorant agents.jpg" alt="Roster Agen" class="img-fluid rounded" style="border: 2px solid #333; filter: drop-shadow(0 0 10px rgba(0,0,0,0.5));">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label text-secondary">Email address</label>
-                            <input type="email" class="form-control" required>
-                        </div>
-                        <div class="mb-4">
-                            <label class="form-label text-secondary">Password</label>
-                            <input type="password" class="form-control" required>
-                        </div>
-                        <button type="submit" class="btn-valo">REGISTER ACCOUNT</button>
-                    </form>
+                    </div>
                 </div>
-            </div>
-        </div>
+                <div id="contact" class="page-section">
+                    <div class="ability-separator">
+                        <h2>CONTACT US</h2>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-5 mb-4">
+                            <div class="valo-card h-100">
+                                <p class="text-secondary mb-4">Punya pertanyaan seputar agent atau web ini? Kirim pesan ke markas kami.</p>
+                                <p class="mb-1 text-white fw-bold">Email:</p>
+                                <p class="text-secondary">support@zoravalo.com</p>
+                                <p class="mb-1 text-white fw-bold">Lokasi:</p>
+                                <p class="text-secondary">Yogyakarta, Indonesia</p>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="valo-card">
+                                <form class="needs-validation" novalidate>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label text-secondary">Nama (Callsign)</label>
+                                            <input type="text" class="form-control" required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label text-secondary">Email</label>
+                                            <input type="email" class="form-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label text-secondary">Pesan</label>
+                                        <textarea class="form-control" rows="4" required></textarea>
+                                    </div>
+                                    <button type="submit" class="btn-valo">KIRIM PESAN</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
+                <div id="signin" class="page-section">
+                    <div class="ability-separator">
+                        <h2>SIGN IN</h2>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-lg-5">
+                            <div class="valo-card">
+                                <form class="needs-validation" novalidate>
+                                    <div class="mb-3">
+                                        <label class="form-label text-secondary">Email address</label>
+                                        <input type="email" class="form-control" required>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label text-secondary">Password</label>
+                                        <input type="password" class="form-control" required>
+                                    </div>
+                                    <button type="submit" class="btn-valo mb-3">LOGIN</button>
+                                    <div class="text-center">
+                                        <small class="text-secondary">Belum punya akun? <a href="#" class="text-danger text-decoration-none fw-bold" onclick="showPage('signup', event)">Daftar di sini</a></small>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="signup" class="page-section">
+                    <div class="ability-separator">
+                        <h2>SIGN UP</h2>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-lg-5">
+                            <div class="valo-card">
+                                <form class="needs-validation" novalidate>
+                                    <div class="mb-3">
+                                        <label class="form-label text-secondary">Riot ID / Username</label>
+                                        <input type="text" class="form-control" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label text-secondary">Email address</label>
+                                        <input type="email" class="form-control" required>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label text-secondary">Password</label>
+                                        <input type="password" class="form-control" required>
+                                    </div>
+                                    <button type="submit" class="btn-valo">REGISTER ACCOUNT</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div> </main>
     </div> <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
@@ -521,25 +641,25 @@
             const targetPage = document.getElementById(pageId);
             if (!targetPage) return; 
 
+            // Sembunyikan semua konten
             document.querySelectorAll('.page-section').forEach(function(section) {
                 section.classList.remove('active-page');
             });
+            // Hapus class active dari semua menu sidebar
             document.querySelectorAll('.nav-btn').forEach(function(btn) {
                 btn.classList.remove('active');
             });
 
+            // Tampilkan halaman yang dituju
             targetPage.classList.add('active-page');
             
-            if(event && event.target.classList.contains('nav-btn')) {
-                event.target.classList.add('active');
+            // Beri warna aktif pada menu yang diklik
+            if(event && event.currentTarget.classList.contains('nav-btn')) {
+                event.currentTarget.classList.add('active');
             }
             
-            window.scrollTo(0,0);
-            
-            const navbarCollapse = document.getElementById('navbarNav');
-            if (navbarCollapse && navbarCollapse.classList.contains('show')) {
-                navbarCollapse.classList.remove('show');
-            }
+            // Scroll layar kanan (main-content) ke paling atas
+            document.querySelector('.main-content').scrollTo(0,0);
         }
 
         // 2. JS UNTUK VALIDASI FORM
@@ -576,7 +696,7 @@
 
         function prosesBeli() {
             if (itemTerpilih) {
-                alert('Berhasil! Kamu akan membeli ' + itemTerpilih + '.\n(Ini hanya simulasi mockup tugas web)');
+                alert('Berhasil! Kamu akan membeli ' + itemTerpilih + '.\n(Enjoy ur game!)');
             } else {
                 alert('Pilih nominal VP terlebih dahulu!');
             }
